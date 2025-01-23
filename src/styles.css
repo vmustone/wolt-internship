@@ -39,7 +39,7 @@ html, body {
     font-family: "Teko", sans-serif;
 }
 
-.test {
+.price-breakdown {
     display: flex;
     flex-direction: row;
     align-items: center;

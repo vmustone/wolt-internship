@@ -1,4 +1,9 @@
 import { useState } from 'react';
+import Buttons from './components/Buttons.tsx'
+import Pricebreakdown from './components/Prices.tsx';
+import Form from './components/Form.tsx'
+import { fetchStaticData } from './Api.tsx';
+import { fetchDynamicData } from './Api.tsx';
 import "./styles.css"
 
 function App() {
@@ -10,7 +15,6 @@ function App() {
 }
 
 const getLocation = (callback: (latitude: number, longitude: number) => void) => {
-  // Tarkistetaan, onko selain tukenut sijainnin hakemista
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -38,11 +42,13 @@ function OrderForm() {
   const [userLatitude, setUserLatitude] = useState(0);
   const [userLongitude, setUserLongitude] = useState(0);
 
-
   const calculateTotalPrice = () => {
     const total = cartValue + deliveryFee + smallOrderSurcharge;
     setTotalPrice(total);
   };
+
+  //fetchDynamicData();
+  //fetchStaticData();
 
   const handleGetLocation = () => {
     getLocation((latitude, longitude) => {
@@ -54,48 +60,21 @@ function OrderForm() {
   return (
     <div className="form-container">
       <h3 className="header">Deliver order price calculator</h3>
-      <form className="order-form">
-        <h4 className="header">Details</h4>
-        <div className="form-group">
-          <label className="header">Venue slug</label>
-          <input type="text" placeholder="enter" data-test-id="venueSlug"/>
-        </div>
-        <div className="form-group">
-          <label className="header">Cart value €</label>
-          <input type="number" placeholder="enter" data-test-id="cartValue" onChange={(e) => setCartValue(parseFloat(e.target.value))}/>
-        </div>
-        <div className="form-group">
-          <label className="header">User latitude</label>
-          <input type="number" placeholder="enter" data-test-id="userLatitude" value={userLatitude} readOnly/>
-        </div>
-        <div className="form-group">
-          <label className="header">User longitude</label>
-          <input type="number" placeholder="enter" data-test-id="userLongitude" value={userLongitude} readOnly/>
-        </div>
-        <div className="form-group">
-          <div className="buttons">
-            <button type="button" data-test-id="getLocation" onClick={handleGetLocation}>Get location</button>
-          </div>
-          <div className="buttons">
-          <button type="button" onClick={calculateTotalPrice}>Calculate delivery price</button>
-          </div>
-        </div>
-        <div className="form-group">
-          <h4 className="header">Price breakdown</h4>
-          <div className="test">
-            <label className="header">Cart value</label>
-            <span className="header">{cartValue} €</span>
-          </div>
-          <label className="header">Delivery fee {deliveryFee} €</label>
-          <label className="header">Delivery distance {deliveryDistance} km</label>
-          <label className="header">Small order surcharge {smallOrderSurcharge} €</label>
-          <label className="header">Total price {totalPrice} €</label>
-        </div>
-      </form>
+      <h4 className="header">Details</h4>
+      <div className="form-group">
+        <Form cartValue={cartValue} setCartValue={setCartValue} userLatitude={userLatitude} userLongitude={userLongitude} />
+        <Buttons name="Get location" onClick={handleGetLocation}/>
+        <Buttons name="Calculate total price" onClick={calculateTotalPrice}/>
+      </div>
+
+      <h4 className="header">Price breakdown</h4>
+          <Pricebreakdown name="Cart value" value={cartValue} unit='€'/>
+          <Pricebreakdown name="Delivery fee" value={deliveryFee} unit='€'/>
+          <Pricebreakdown name="Delivery distance" value={deliveryDistance} unit="km"/>
+          <Pricebreakdown name="Small order surcharge" value={smallOrderSurcharge} unit='€'/>
+          <Pricebreakdown name="Total price" value={totalPrice} unit='€'/>
     </div>
   )
 }
-
-
 
 export default App
