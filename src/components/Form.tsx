@@ -15,6 +15,7 @@ const Form = ({ cartValue, setCartValue, userLatitude, userLongitude } : { cartV
         <div className="form-group">
           <label className="header">Venue slug</label>
           <Field
+		  	className='input'
 		  	type="text"
 			name="venueSlug"
 			placeholder="enter"
@@ -23,6 +24,7 @@ const Form = ({ cartValue, setCartValue, userLatitude, userLongitude } : { cartV
 
           <label className="header">Cart value €</label>
           <Field
+		  	className='input'
 		  	type="text"
 			name="cartValue" 
 			placeholder="enter" 
@@ -33,6 +35,7 @@ const Form = ({ cartValue, setCartValue, userLatitude, userLongitude } : { cartV
 
           <label className="header">User latitude</label>
           <Field
+		 	className='input'
 		  	type="number"
 			name="userLatitude"
 			placeholder="enter"
@@ -42,6 +45,7 @@ const Form = ({ cartValue, setCartValue, userLatitude, userLongitude } : { cartV
 
           <label className="header">User longitude</label>
           <Field
+		  className='input'
 		  type="number"
 		  name="userLongitude"
 		  placeholder="enter"

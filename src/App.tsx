@@ -4,6 +4,7 @@ import Pricebreakdown from './components/Prices.tsx';
 import Form from './components/Form.tsx'
 import { fetchStaticData } from './Api.tsx';
 import { fetchDynamicData } from './Api.tsx';
+import { calculate } from './Api.tsx';
 import "./styles.css"
 
 function App() {
@@ -46,7 +47,7 @@ function OrderForm() {
     const total = cartValue + deliveryFee + smallOrderSurcharge;
     setTotalPrice(total);
   };
-
+  calculate();
   //fetchDynamicData();
   //fetchStaticData();
 

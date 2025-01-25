@@ -14,7 +14,14 @@ const fetchDynamicData = async () => {
 	const distanceRanges = response.data.venue_raw.delivery_specs.delivery_pricing.distance_ranges;
 	console.log({ orderMinimum, basePrice, distanceRanges });
 	return { orderMinimum, basePrice, distanceRanges };
-  };
-  
+}
+
+export function calculate() {
+	const coordinates = fetchStaticData();
+	const data = fetchDynamicData();
+	console.log(coordinates);
+	console.log(data);
+}
+
 export { fetchDynamicData };
 export { fetchStaticData };
