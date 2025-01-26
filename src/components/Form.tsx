@@ -1,61 +1,55 @@
-import { Formik, Field, Form as FormikForm } from 'formik';
+import { Formik, Field, Form as FormikForm, } from 'formik';
+import Buttons from './Buttons';
+import { getLocationAndSetValues } from '../utils/Location.tsx';
 
-const Form = ({ cartValue, setCartValue, userLatitude, userLongitude } : { cartValue: number, setCartValue: (value: number) => void, userLatitude: number, userLongitude: number })  => {
-  return (
-    <Formik
-      initialValues={{ venueSlug: '', cartValue: '', userLatitude: userLatitude, userLongitude: userLongitude }}
-      onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-        }, 400);
-      }}
-    >
-      <FormikForm>
-        <div className="form-group">
-          <label className="header">Venue slug</label>
-          <Field
-		  	className='input'
-		  	type="text"
-			name="venueSlug"
-			placeholder="enter"
-			data-test-id="venueSlug"
+const Form = ({handleGetData} : {handleGetData: any}) => {
+	return (
+		<Formik
+		initialValues={{
+		  venueSlug: '',
+		  cartValue: 0,
+		  userLatitude: 0,
+		  userLongitude: 0,
+		}}
+		onSubmit={(values) => {
+		  console.log('Form submitted:', values);
+		}}
+	  >
+		{({ values, setFieldValue }) => (
+		  <FormikForm>
+			<h4 className="header">Details</h4>
+			<div className="form-group">
+			  <label className='header'>Venue slug</label>
+			  <Field className='input' type="text" name="venueSlug" placeholder="Enter venue slug" />
+  
+			  <label className='header'>Cart value €</label>
+			  <Field className='input' type="number" name="cartValue" placeholder="Enter cart value" />
+  
+			  <label className='header'>User latitude</label>
+			  <Field className='input' type="number" name="userLatitude" placeholder="Enter latitude" />
+  
+			  <label className='header'>User longitude</label>
+			  <Field className='input' type="number" name="userLongitude" placeholder="Enter longitude" />
+			</div>
+			<Buttons
+				name="Get location"
+				onClick={() => getLocationAndSetValues(setFieldValue, (ErrorMessage) => alert(ErrorMessage))}
+				/>
+			<Buttons
+				name="Calculate total price"
+				onClick={() =>
+					handleGetData({
+						venue: values.venueSlug, 
+						cartValue: values.cartValue, 
+						latitude: values.userLatitude, 
+						longitude: values.userLongitude
+					})
+				}
 			/>
-
-          <label className="header">Cart value €</label>
-          <Field
-		  	className='input'
-		  	type="text"
-			name="cartValue" 
-			placeholder="enter" 
-			data-test-id="cartValue" 
-			value={cartValue}
-			onChange={(event: React.ChangeEvent<HTMLInputElement>) => setCartValue(parseFloat(event.target.value))}
-			/>
-
-          <label className="header">User latitude</label>
-          <Field
-		 	className='input'
-		  	type="number"
-			name="userLatitude"
-			placeholder="enter"
-			data-test-id="userLatitude" 
-			value={userLatitude} readOnly
-			/>
-
-          <label className="header">User longitude</label>
-          <Field
-		  className='input'
-		  type="number"
-		  name="userLongitude"
-		  placeholder="enter"
-		  data-test-id="userLongitude"
-		  value={userLongitude} readOnly
-		  />
-	  </div>
-	  </FormikForm>
-    </Formik>
-  );
-};
-
+		  </FormikForm>
+		)}
+	  </Formik>
+	);
+  };
+  
 export default Form;
